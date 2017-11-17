@@ -22,4 +22,35 @@
 
 'use strict';
 
-// TODO: Complete
+var icons = require('../data/icons.json');
+
+var map = {};
+icons.forEach(function(icon) {
+  map[icon.id] = icon;
+});
+
+/**
+ * Returns the FontAwesome icon with the specified <code>id</code>.
+ *
+ * This method will return <code>null</code> if no icon could be found for <code>id</code>.
+ *
+ * @param {string} id - the ID of the FontAwesome icon to be returned
+ * @return {?Object} The FontAwesome icon with <code>id</code> or <code>null</code> if none could be found.
+ * @public
+ */
+function getIcon(id) {
+  return Object.prototype.hasOwnProperty.call(map, id) ? map[id] : null;
+}
+
+/**
+ * Returns all of the FontAwesome icons.
+ *
+ * @return {Object[]} The icons.
+ * @public
+ */
+function getIcons() {
+  return icons;
+}
+
+module.exports = getIcons;
+module.exports.get = getIcon;
