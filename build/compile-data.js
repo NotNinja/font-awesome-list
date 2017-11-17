@@ -24,42 +24,44 @@
 
 /* eslint "no-console": "off", "no-process-exit": "off" */
 
-const https = require('https');
-const fs = require('fs');
-const path = require('path');
-const yaml = require('js-yaml');
+var https = require('https');
+var fs = require('fs');
+var path = require('path');
+var yaml = require('js-yaml');
 
-const pkg = require('../package.json');
+var pkg = require('../package.json');
 
-https.get(`https://raw.githubusercontent.com/FortAwesome/Font-Awesome/v${pkg.version}/src/icons.yml`, (res) => {
+var url = 'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/v' + pkg.version + '/src/icons.yml';
+
+https.get(url, function(res) {
   if (res.statusCode !== 200) {
-    fail(new Error(`Request failed! Status Code: ${res.statusCode}`));
+    fail(new Error('Request failed! Status Code: ' + res.statusCode));
   }
 
   res.setEncoding('utf8');
 
-  let data = '';
+  var data = '';
 
-  res.on('data', (chunk) => {
+  res.on('data', function(chunk) {
     data += chunk;
   });
-  res.on('end', () => {
+  res.on('end', function() {
     try {
-      const parsedData = yaml.safeLoad(data, 'utf8');
-      const icons = parsedData.icons;
+      var parsedData = yaml.safeLoad(data, 'utf8');
+      var icons = parsedData.icons;
 
-      if (!Array.isArray(icons)) {
-        throw new Error(`Invalid icons found: ${icons}`);
+      if (!isArray(icons)) {
+        throw new Error('Invalid icons found: ' + icons);
       }
       if (icons.length === 0) {
         throw new Error('No icons found!');
       }
 
-      const filePath = path.resolve(__dirname, '../data/icons.json');
+      var filePath = path.resolve(__dirname, '../data/icons.json');
 
       fs.writeFileSync(filePath, JSON.stringify(icons), 'utf8');
 
-      console.log(`Updated "${path.basename(filePath)}" for FontAwesome v${pkg.version}!`);
+      console.log('Updated "' + path.basename(filePath) + '" for FontAwesome v' + pkg.version + '!');
     } catch (e) {
       fail(e);
     }
@@ -70,4 +72,8 @@ function fail(error) {
   console.error(error.message);
 
   process.exit(1);
+}
+
+function isArray(obj) {
+  return Object.prototype.toString.call(obj) === '[object Array]';
 }

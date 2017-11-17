@@ -52,5 +52,7 @@ function getIcons() {
   return icons;
 }
 
-module.exports = getIcons;
-module.exports.get = getIcon;
+module.exports = {
+  all: getIcons,
+  get: getIcon
+};
