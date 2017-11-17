@@ -22,5 +22,58 @@
 
 'use strict';
 
-// TODO: Complete
-// Pull data from https://raw.githubusercontent.com/FortAwesome/Font-Awesome/v4.7.0/src/icons.yml and compile using js-yaml
+/* eslint "no-console": "off", "no-process-exit": "off" */
+
+var https = require('https');
+var fs = require('fs');
+var path = require('path');
+var yaml = require('js-yaml');
+
+var pkg = require('../package.json');
+
+var url = 'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/v' + pkg.version + '/src/icons.yml';
+
+https.get(url, function(res) {
+  if (res.statusCode !== 200) {
+    fail(new Error('Request failed! Status Code: ' + res.statusCode));
+  }
+
+  res.setEncoding('utf8');
+
+  var data = '';
+
+  res.on('data', function(chunk) {
+    data += chunk;
+  });
+  res.on('end', function() {
+    try {
+      var parsedData = yaml.safeLoad(data, 'utf8');
+      var icons = parsedData.icons;
+
+      if (!isArray(icons)) {
+        throw new Error('Invalid icons found: ' + icons);
+      }
+      if (icons.length === 0) {
+        throw new Error('No icons found!');
+      }
+
+      var filePath = path.resolve(__dirname, '../data/icons.json');
+
+      fs.writeFileSync(filePath, JSON.stringify(icons), 'utf8');
+
+      console.log('Updated "' + path.basename(filePath) + '" for FontAwesome v' + pkg.version + '!');
+    } catch (e) {
+      fail(e);
+    }
+  });
+}).on('error', fail);
+
+function fail(error) {
+  console.error(error.message);
+
+  process.exit(1);
+}
+
+function isArray(obj) {
+  return Object.prototype.toString.call(obj) === '[object Array]';
+}
