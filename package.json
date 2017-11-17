@@ -1,0 +1,36 @@
+{
+  "name": "font-awesome-list",
+  "version": "4.7.0",
+  "description": "Lists the icons provided by FontAwesome",
+  "homepage": "https://github.com/NotNinja/font-awesome-list",
+  "bugs": {
+    "url": "https://github.com/NotNinja/font-awesome-list/issues"
+  },
+  "author": {
+    "name": "Alasdair Mercer",
+    "email": "mercer.alasdair@gmail.com",
+    "url": "https://not.ninja"
+  },
+  "license": "MIT",
+  "keywords": [
+    "font",
+    "awesome",
+    "fontawesome",
+    "list",
+    "icon"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NotNinja/font-awesome-list.git"
+  },
+  "devDependencies": {
+    "eslint": "^4.11.0",
+    "eslint-config-notninja": "^0.2.3",
+    "js-yaml": "^3.10.0"
+  },
+  "main": "src/font-awesome-list.js",
+  "scripts": {
+    "build": "node build/compile-data.js",
+    "test": "eslint \"src/**/*.js\""
+  }
+}

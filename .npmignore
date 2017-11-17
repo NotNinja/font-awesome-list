@@ -1,0 +1,4 @@
+build/
+.*
+AUTHORS.md
+CONTRIBUTING.md
