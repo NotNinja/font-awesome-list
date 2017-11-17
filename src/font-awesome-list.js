@@ -23,24 +23,18 @@
 'use strict';
 
 var icons = require('../data/icons.json');
+var pkg = require('../package.json');
 
 var map = {};
 icons.forEach(function(icon) {
   map[icon.id] = icon;
-});
 
-/**
- * Returns the FontAwesome icon with the specified <code>id</code>.
- *
- * This method will return <code>null</code> if no icon could be found for <code>id</code>.
- *
- * @param {string} id - the ID of the FontAwesome icon to be returned
- * @return {?Object} The FontAwesome icon with <code>id</code> or <code>null</code> if none could be found.
- * @public
- */
-function getIcon(id) {
-  return Object.prototype.hasOwnProperty.call(map, id) ? map[id] : null;
-}
+  if (icon.aliases) {
+    icon.aliases.forEach(function(alias) {
+      map[alias] = icon;
+    });
+  }
+});
 
 /**
  * Returns all of the FontAwesome icons.
@@ -48,11 +42,39 @@ function getIcon(id) {
  * @return {Object[]} The icons.
  * @public
  */
-function getIcons() {
-  return icons;
+function all() {
+  return icons.slice();
+}
+
+/**
+ * Returns the FontAwesome icon with the specified <code>id</code>.
+ *
+ * <code>id</code> can even be an alias but it must always exactly match. To be safe, always specify using lower case.
+ *
+ * A hash lookup is used to find the match icon, so it's really fast.
+ *
+ * This method will return <code>null</code> if no icon could be found for <code>id</code>.
+ *
+ * @param {string} id - the ID (or alias) of the FontAwesome icon to be returned
+ * @return {?Object} The FontAwesome icon with <code>id</code> or <code>null</code> if none could be found.
+ * @public
+ */
+function get(id) {
+  return Object.prototype.hasOwnProperty.call(map, id) ? map[id] : null;
+}
+
+/**
+ * Returns the FontAwesome version.
+ *
+ * @return {string} The version.
+ * @public
+ */
+function version() {
+  return pkg.version;
 }
 
 module.exports = {
-  all: getIcons,
-  get: getIcon
+  all: all,
+  get: get,
+  version: version
 };

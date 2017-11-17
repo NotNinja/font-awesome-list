@@ -27,7 +27,48 @@ listed.
 
 ## API
 
-TODO: Document
+### `all()`
+
+Returns all of the FontAwesome icons.
+
+``` javascript
+var fontAwesomeList = require('font-awesome-list');
+
+fontAwesomeList.all();
+//=> [ { name: "Glass", id: "glass", unicode: "f000", created: 1, filter: [ "martini", "drink", "bar", "alcohol", "liquor" ], categories: [ "Web Application Icons" ] }, ... ]
+```
+
+### `get(id)`
+
+Returns the FontAwesome icon with the specified `id`.
+
+`id` can even be an alias but it must always exactly match. To be safe, always specify using lower case.
+
+A hash lookup is used to find the match icon, so it's really fast.
+
+This method will return `null` if no icon could be found for `id`.
+
+``` javascript
+var fontAwesomeList = require('font-awesome-list');
+
+fontAwesomeList.get('git');
+//=> { name: "Git", id: "git", unicode: "f1d3", created: 4.1, categories: [ "Brand Icons" ] }
+fontAwesomeList.get('fa');
+//=> { name: "Font Awesome", id: "font-awesome", unicode: "f2b4", created: 4.6, aliases: [ "fa" ], categories: [ "Brand Icons" ] }
+fontAwesomeList.get('unknown');
+//=> null
+```
+
+### `version()`
+
+Returns the FontAwesome version.
+
+``` javascript
+var fontAwesomeList = require('font-awesome-list');
+
+fontAwesomeList.version();
+//=> "4.7.0"
+```
 
 ## Bugs
 

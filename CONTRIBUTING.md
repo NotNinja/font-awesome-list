@@ -18,6 +18,17 @@ $ npm test
 
 You must have at least [Node.js](https://nodejs.org) version 4 or newer installed.
 
+The icon data set should only be built for each new version of [FontAwesome](http://fontawesome.io), so this only needs
+to be done once per release:
+
+``` bash
+# update data/icons.json
+$ npm run build
+```
+
+It will pull the latest data from the [FontAwesome GitHub repository](https://github.com/FortAwesome/Font-Awesome) based
+on the version within our own `package.json` file.
+
 All pull requests should be made to the `develop` branch.
 
 Don't forget to add your details to the list of
